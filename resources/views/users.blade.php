@@ -8,23 +8,53 @@
 
     <p>List of registered system users.</p>
 
-    <table>
+    <a href="{{ route('users.create') }}">Create New User</a>
+
+    <br><br>
+
+    @if (session('success'))
+        <p style="color:green;">
+            {{ session('success') }}
+        </p>
+    @endif
+
+    <table border="1" cellpadding="10">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Avatar</th>
                 <th>Username</th>
                 <th>Full Name</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach ($users as $user)
+            @forelse ($users as $user)
                 <tr>
                     <td>{{ $user->id }}</td>
+
+                    <td>
+                        @if ($user->avatar)
+                            <img
+                                src="{{ asset('storage/' . $user->avatar) }}"
+                                alt="User Avatar"
+                                width="60"
+                                height="60"
+                                style="object-fit:cover; border-radius:50%;"
+                            >
+                        @else
+                            No Avatar
+                        @endif
+                    </td>
+
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->full_name }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="4">No users found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 

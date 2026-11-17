@@ -8,6 +8,12 @@
 
     <p>List of registered customers.</p>
 
+    @if (session('success'))
+        <p style="color:green;">{{ session('success') }}</p>
+    @endif
+
+    <a href="{{ route('customers.create') }}">+ Create Customer</a>
+
     <table>
         <thead>
             <tr>
@@ -15,6 +21,7 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -25,6 +32,11 @@
                     <td>{{ $customer->full_name }}</td>
                     <td>{{ $customer->email }}</td>
                     <td>{{ $customer->phone }}</td>
+                    <td>
+                        <a href="{{ route('customers.edit', $customer->id) }}">
+                            Edit
+                        </a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
