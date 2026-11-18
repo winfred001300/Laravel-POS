@@ -1,70 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Laravel POS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f4f4f4;
-        }
+    <title>{{ config('app.name', 'Laravel POS') }}</title>
 
-        nav {
-            background: #222;
-            padding: 15px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-right: 20px;
-        }
-
-        nav a:hover {
-            color: #00bcd4;
-        }
-
-        .container {
-            width: 85%;
-            margin: 30px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background: #222;
-            color: white;
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100">
 
-    <nav>
-        <a href="{{ route('home') }}">Home</a>
-        <a href="{{ route('about') }}">About</a>
-        <a href="{{ route('customers') }}">Customer Accounts</a>
-        <a href="{{ route('users') }}">User Accounts</a>
-    </nav>
+        @include('layouts.navigation')
 
-    <div class="container">
-        @yield('content')
+        <main class="py-6 px-4 sm:px-6 lg:px-8">
+            @yield('content')
+        </main>
+
     </div>
-
 </body>
 </html>

@@ -9,10 +9,16 @@
     <p>List of registered customers.</p>
 
     @if (session('success'))
-        <p style="color:green;">{{ session('success') }}</p>
+        <p style="color:green;">
+            {{ session('success') }}
+        </p>
     @endif
 
-    <a href="{{ route('customers.create') }}">+ Create Customer</a>
+    <a href="{{ route('customers.create') }}">
+        <button type="button">Add New Customer</button>
+    </a>
+
+    <br><br>
 
     <table>
         <thead>
@@ -21,12 +27,12 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach ($customers as $customer)
+            @forelse ($customers as $customer)
                 <tr>
                     <td>{{ $customer->id }}</td>
                     <td>{{ $customer->full_name }}</td>
@@ -36,9 +42,25 @@
                         <a href="{{ route('customers.edit', $customer->id) }}">
                             Edit
                         </a>
+
+                        <form action="{{ route('customers.destroy', $customer->id) }}"
+                              method="POST"
+                              style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                onclick="return confirm('Delete this customer?')">
+                                Delete
+                            </button>
+                        </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="5">No customer records found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 

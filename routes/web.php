@@ -1,32 +1,40 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
-// Home Page
-Route::get('/', [PageController::class, 'index'])->name('home');
+// Homepage
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
-// About Page
-Route::get('/about', [PageController::class, 'about'])->name('about');
+// Dashboard
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Customer Management
-Route::get('/customers', [CustomerController::class, 'index'])->name('customers');
+// POS Routes - Protected by Authentication
+Route::middleware('auth')->group(function () {
 
-Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
+    // Customer Resource Routes
+    Route::resource('customers', CustomerController::class);
 
-Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+    // User Resource Routes
+    Route::resource('users', UserController::class);
 
-Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
 
-Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 
-Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
 
-// User Management
-Route::get('/users', [UserController::class, 'index'])->name('users');
+});
 
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
+// Authentication Routes
+require __DIR__.'/auth.php';

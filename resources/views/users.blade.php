@@ -37,10 +37,11 @@
                         @if ($user->avatar)
                             <img
                                 src="{{ asset('storage/' . $user->avatar) }}"
-                                alt="User Avatar"
+                                alt="{{ $user->username }} Avatar"
                                 width="60"
                                 height="60"
-                                style="object-fit:cover; border-radius:50%;"
+                                style="object-fit:cover; border-radius:50%; display:block;"
+                                onerror="this.style.display='none';"
                             >
                         @else
                             No Avatar
